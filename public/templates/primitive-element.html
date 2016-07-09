@@ -1,0 +1,39 @@
+<input
+        *ngIf="inputType!=='value' && ((validModes==='edition-view' && currentMode==='edition') || validModes==='edition')"
+        type="text"
+        size="20"
+        placeholder="{{primitiveElementPlaceHolder}}"
+        title="{{primitiveElementTitle}}"
+        [(ngModel)]="jsonValue"
+        (ngModelChange)="setData()"
+        name="primitive"
+        class=""
+        (keyup.enter)="trySubmit()"
+        (dblclick)="trySubmit()"
+        [ngClass]='{"form-control":validModes==="edition" || inputType==="value","edition-view-mode-edition":validModes==="edition-view"}'
+        autocomplete="off"
+>
+<textarea
+            *ngIf="inputType==='value' && ((validModes==='edition-view' && currentMode==='edition') || validModes==='edition')"
+            placeholder="{{primitiveElementPlaceHolder}}"
+            title="{{primitiveElementTitle}}"
+            [(ngModel)]="jsonValue"
+            (ngModelChange)="setData()"
+            name="primitive"
+            class=""
+            (dblclick)="trySubmit()"
+            [ngClass]='{"form-control":validModes==="edition" || inputType==="value","edition-view-mode-edition":validModes==="edition-view"}'
+            autocomplete="off"
+            class="form-control" rows="1"
+>
+</textarea>
+<span   *ngIf="validModes==='edition-view' && currentMode==='view' && !emptyValue"
+        (dblclick)="trySubmit()"
+>
+    {{jsonValue}}
+</span>
+<span   *ngIf="validModes==='edition-view' && currentMode==='view' && emptyValue" style="color:#CCCCCC;"
+        (dblclick)="trySubmit()"
+>
+    vacio
+</span>

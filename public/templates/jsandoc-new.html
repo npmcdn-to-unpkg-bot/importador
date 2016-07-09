@@ -1,0 +1,66 @@
+<!-- resources/views/auth/register.blade.php -->
+<h1 >
+  Creación de documento
+</h1>
+<div *ngIf="newDocCreated">
+  {{newDocCreated}}
+</div>
+<div class="panel panel-default" >
+    <div class="panel-heading">
+      <h3 class="panel-title">Metadatos del documento</h3>
+    </div>
+    <div class="panel-body" style="margin-bottom:10px;">
+      <form
+      >
+        <div class="row">
+          <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+              <label class="col-xs-12 col-sm-4 col-lg-4" for="name">Nombre:</label>
+              <div class="col-xs-12 col-sm-8 col-lg-8">
+                  <input  type="text"
+                          placeholder="{{'Nombre'}}"
+                          title="{{'Nombre'}}"
+                          [(ngModel)]="newDoc.name"
+                          name="name"
+                          class="form-control"
+                  >
+              </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-3  col-md-3 col-lg-3">
+              <label class="col-xs-12 col-sm-4 col-lg-4" for="title">Titulo:</label>
+              <div class="col-xs-12 col-sm-8 col-lg-8">
+                  <input  type="text"
+                          placeholder="{{'Titulo'}}"
+                          title="{{'Titulo'}}"
+                          [(ngModel)]="newDoc.title"
+                          name="title"
+                          class="form-control"
+                  >
+              </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-5  col-md-4 col-lg-4">
+              <label class="col-xs-12 col-sm-5 col-lg-5" for="doc_namespace">Espacio de nombre:</label>
+              <div class="col-xs-12 col-sm-7 col-lg-7">
+                  <input  type="text"
+                          placeholder="{{'Espacio de nombre'}}"
+                          title="{{'Espacio de nombre'}}"
+                          [(ngModel)]="newDoc.doc_namespace"
+                          name="doc_namespace"
+                          class="form-control"
+                  >
+              </div>
+          </div>
+          <div class="col-xs-offset-3 col-xs-6 col-sm-offset-4 col-sm-4 col-md-2 col-md-offset-0 col-lg-2 col-lg-offset-0">
+            <div class="visible-xs" style="height:5px;"></div>
+            <button
+                    class="btn btn-primary btn-block"
+                    (click)="createDocument('primitive')"
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>

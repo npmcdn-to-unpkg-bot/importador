@@ -1,0 +1,247 @@
+<div style="margin:5px;" *ngIf="dataType==='array'">
+  <form class="form-inline">
+    <div class="form-group" >
+    <!-- buttons -->
+      <button  class="btn btn-success btn-xs"
+              (click)="changeMode('primitive')"
+              title="Valor"
+              [ngClass]='{"les-important":getModeAsInt()!==1}'
+      >
+        <span
+              class="glyphicon glyphicon-minus"
+              aria-hidden="true"
+        >
+        </span>
+      </button>
+      <button  class="btn btn-info btn-xs"
+              (click)="changeMode('array')"
+              title="Lista simple"
+              [ngClass]='{"les-important":getModeAsInt()!==2}'
+      >
+        <span
+              class="glyphicon glyphicon-align-justify"
+              aria-hidden="true"
+        >
+        </span>
+      </button>
+      <button  class="btn btn-primary btn-xs"
+              (click)="changeMode('property-value')"
+              title="Lista compuesta"
+              [ngClass]='{"les-important":getModeAsInt()!==3}'
+      >
+        <span
+              class="glyphicon glyphicon-list"
+              aria-hidden="true"
+        >
+        </span>
+      </button>
+      <button  class="btn btn-warning btn-xs"
+                      (click)="add(section)"
+                      title="Agregar"
+                      [disabled]="!validePush()"
+
+      >
+        <span
+              class="glyphicon glyphicon-plus"
+              aria-hidden="true"
+        >
+        </span>
+      </button>
+    </div>
+
+  <!-- inputs -->
+    <div class="form-group" *ngIf="mode==='primitive'">
+      <label class="sr-only" for="primitive">Primitive</label>
+      <primitive-element
+                          (sendData)="setJsonLevel($event,'primitiveElementValue')"
+                          (emitSubmit)="add(section)"
+                          [primitiveElementPlaceHolder]="'Concepto'"
+                          [primitiveElementTitle]="'Agregar un concepto'"
+                          [validModes]="'edition'"
+                          [inputType]="'value'"
+      >
+      </primitive-element>
+    </div>
+    <div class="form-group" *ngIf="mode==='array'">
+      <label class="sr-only" for="simple_list">Lista simple</label>
+      <array-element  *ngIf="mode==='array'"
+                      (sendData)="setJsonLevel($event,'arrayElementValue')" >
+      </array-element>
+    </div>
+    <div class="form-group" *ngIf="mode==='property-value'">
+      <label class="sr-only" for="complex_list">Lista compuesta</label>
+      <property-element  *ngIf="mode==='property-value'"
+                      (sendData)="setJsonLevel($event,'propertyElementValue')" >
+      </property-element>
+    </div>
+    <div class="form-group" *ngIf="section.length>0">
+      <select class="form-control" [(ngModel)]="orderPosition">
+        <option  value="before" >
+          Antes de
+        </option>
+        <option  value="after" [selected]="1">
+          Despues de
+        </option>
+      </select>
+      <select class="form-control" [(ngModel)]="selectedPosition">
+        <option *ngFor="#item of section; #position = index #end = last" [value]="position+1" [selected]="end">
+        Elemento {{position+1}}
+        </option>
+      </select>
+    </div>
+  </form>
+</div>
+<div style="margin:5px;" *ngIf="dataType==='property-value'">
+  <form class="form-inline">
+    <div class="form-group" >
+    <!-- buttons -->
+      <button  class="btn btn-success btn-xs"
+              (click)="changeMode('primitive-primitive')"
+              title="Valor"
+              [ngClass]='{"les-important":getModeAsInt()!==4}'
+      >
+        <span
+              class="glyphicon glyphicon-minus"
+              aria-hidden="true"
+        >
+        </span>
+      </button>
+      <button  class="btn btn-info btn-xs"
+              (click)="changeMode('primitive-array')"
+              title="Lista simple"
+              [ngClass]='{"les-important":getModeAsInt()!==5}'
+      >
+        <span
+              class="glyphicon glyphicon-align-justify"
+              aria-hidden="true"
+        >
+        </span>
+      </button>
+      <button  class="btn btn-primary btn-xs"
+              (click)="changeMode('primitive-property')"
+              title="Lista compuesta"
+              [ngClass]='{"les-important":getModeAsInt()!==6}'
+      >
+        <span
+              class="glyphicon glyphicon-list"
+              aria-hidden="true"
+        >
+        </span>
+      </button>
+      <button  class="btn btn-warning btn-xs"
+                      (click)="add(section)"
+                      title="Agregar"
+                      [disabled]="!validePush()"
+
+      >
+        <span
+              class="glyphicon glyphicon-plus"
+              aria-hidden="true"
+        >
+        </span>
+      </button>
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="complex_list">Lista compuesta</label>
+      <primitive-element (sendData)="setJsonLevel($event,'propertyPrimitiveElementValue')"
+                          (emitSubmit)="add(section)"
+                          [primitiveElementPlaceHolder]="'Propiedad'"
+                          [primitiveElementTitle]="'Agregar una propiedad'"
+                          [validModes]="'edition'"
+                          [inputType]="'property'"
+      >
+      </primitive-element>
+    </div>
+    <div class="form-group" *ngIf="mode==='primitive-primitive'">
+      <label class="sr-only" for="complex_list">Lista compuesta</label>
+      <primitive-element
+                          (sendData)="setJsonLevel($event,'propertyValuePrimitiveElementValue')"
+                          (emitSubmit)="add(section)"
+                          [primitiveElementPlaceHolder]="'Valor'"
+                          [primitiveElementTitle]="'Agregar un valor'"
+                          [validModes]="'edition'"
+                          [inputType]="'value'"
+      >
+      </primitive-element>
+    </div>
+    <div class="form-group" *ngIf="mode==='primitive-array'">
+      <label class="sr-only" for="simple_list">Lista simple</label>
+      <array-element
+                      (sendData)="setJsonLevel($event,'propertyArrayPrimitiveElementValue')">
+      </array-element>
+    </div>
+    <div class="form-group" *ngIf="mode==='primitive-property'">
+      <label class="sr-only" for="complex_list">Lista compuesta</label>
+      <property-element
+                      (sendData)="setJsonLevel($event,'propertyPropertyElementValue')">
+      </property-element>
+    </div>
+    <div class="form-group" *ngIf="keys.length>0">
+      <select class="form-control" [(ngModel)]="orderPosition">
+        <option  value="before" >
+          Antes de
+        </option>
+        <option  value="after" [selected]="1">
+          Despues de
+        </option>
+      </select>
+      <select class="form-control" [(ngModel)]="selectedPosition">
+        <option *ngFor="#key of keys; #position = index #end = last" [value]="position+1" [selected]="end">
+        {{key}}
+        </option>
+      </select>
+    </div>
+  </form>
+</div>
+<div style="margin:5px;" *ngIf="dataType==='empty'">
+  <form class="form-inline">
+    <div class="form-group" >
+      <button  class="btn btn-info btn-xs"
+              (click)="changeMode('array')"
+              title="Lista simple"
+              [ngClass]='{"les-important":getModeAsInt()!==2}'
+      >
+        <span
+              class="glyphicon glyphicon-align-justify"
+              aria-hidden="true"
+        >
+        </span>
+      </button>
+      <button  class="btn btn-primary btn-xs"
+              (click)="changeMode('property-value')"
+              title="Lista compuesta"
+              [ngClass]='{"les-important":getModeAsInt()!==3}'
+      >
+        <span
+              class="glyphicon glyphicon-list"
+              aria-hidden="true"
+        >
+        </span>
+      </button>
+      <button  class="btn btn-warning btn-xs"
+                      (click)="add(section)"
+                      title="Agregar"
+                      [disabled]="mode!=='array' && mode!=='property-value' "
+
+      >
+        <span
+              class="glyphicon glyphicon-plus"
+              aria-hidden="true"
+        >
+        </span>
+      </button>
+    </div>
+    <div class="form-group" *ngIf="mode==='array'">
+      <label class="sr-only" for="simple_list">Lista simple</label>
+      <array-element  *ngIf="mode==='array'"
+                      (sendData)="setJsonLevel($event,'arrayElementValue')" >
+      </array-element>
+    </div>
+    <div class="form-group" *ngIf="mode==='property-value'">
+      <label class="sr-only" for="complex_list">Lista compuesta</label>
+      <property-element  *ngIf="mode==='property-value'"
+                      (sendData)="setJsonLevel($event,'propertyElementValue')" >
+      </property-element>
+    </div>
+  </form>
+</div>

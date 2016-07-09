@@ -1,0 +1,30 @@
+<div *ngIf="userProfile && userProfile.full_name">
+  <h1 >
+    Bienvenido {{userProfile.full_name}}
+  </h1>
+  <user-profile [userProfile]="userProfile">
+  </user-profile>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Documentos</h3>
+    </div>
+    <div class="panel-body" style="margin:10px;">
+      <div class="row">
+        <div  *ngFor="#doc of userDocs; #position = index #end = last"
+              class="col-xs-12"
+              style="border:1px solid #CCCCCC; border-radius:5px;"
+        >
+          <div class="col-xs-1">
+            {{doc.name}}
+          </div>
+          <div class="col-xs-11" style="padding-top:3px; padding-bottom:3px;">
+            <button type="button" class="btn btn-success btn-sm"  (click)="gotoAction('JsandocShow',userProfile.user_namespace,doc.doc_namespace)">Ver</button>
+            <button type="button" class="btn btn-warning btn-sm"  (click)="gotoAction('JsandocEdit',userProfile.user_namespace,doc.doc_namespace)">Editar</button>
+            <button type="button" class="btn btn-danger btn-sm"  (click)="gotoAction('JsandocEdit',userProfile.user_namespace,doc.doc_namespace)">Borrar</button>
+            <button type="button" class="btn btn-info btn-sm"  (click)="gotoAction('JsandocShared',userProfile.user_namespace,doc.doc_namespace)">Compartido</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
