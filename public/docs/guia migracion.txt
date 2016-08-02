@@ -1,0 +1,97 @@
+catalogos afectados por migraciones
+pasos para importar excel
+*remover filas mezcladas
+*remover espacios
+*remover saltos de linea
+*agregar columna id, incremental
+
+TRUNCATE ci_tipo_componente;
+TRUNCATE ci_marcarefaccion;
+TRUNCATE ci_marcacomponente;
+TRUNCATE ci_marca;
+TRUNCATE ci_inventario;
+TRUNCATE ci_inventario_referencia;
+TRUNCATE ci_inventario_precio_venta;
+
+*utilizar herramienta y extrar todos los catalogos simples
+
+    -ci_tipo_componente         / TIPO DE COMPONENTE GENERAL
+    -ci_referencia              / No cambia
+    -ci_marcarefaccion          / MARCA REFACCION
+    -ci_marcacomponente         / TIPO DECOMPONENTE
+    -ci_marca                   / MARCA
+
+*remplazar ',' por otro caracter %%%
+    -ci_inventario
+
+        ('|")
+        ->
+            \\$1
+
+        \n(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?)
+        ->
+            \nINSERT INTO ci_inventario (npc,descripcion,precio,codigo,original) VALUES ('$2','$31','$32','$3','$4');
+
+        %%%
+        ->
+            ,
+    -ci_inventario_referencia
+
+        ('|")
+        ->
+            \\$1
+
+        5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,25
+        \n(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*)
+        ->
+            \n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='AIRTEX'),'0'),'$5');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='CARTER'),'0'),'$6');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='KEM'),'0'),'$7');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='WALBRO'),'0'),'$8');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='PFP'),'0'),'$9');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='DELPHI'),'0'),'$10');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='STD'),'0'),'$11');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='WELLS'),'0'),'$12');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='TOMCO'),'0'),'$13');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='TRANSPO'),'0'),'$14');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='WAI'),'0'),'$15');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='BOSCH'),'0'),'$16');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='UNIPOINT'),'0'),'$17');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='VALEO'),'0'),'$18');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='INTERFIL'),'0'),'$19');\n
+            INSERT INTO ci_inventario_referencia (id_inventario,id_referencia,codigo)
+            VALUES($1,IFNULL((SELECT id_referencia FROM ci_referencia WHERE nombre='OE / OTRO'),'0'),'$25');\n\n
+        %%%
+        ->
+            ,
+
+    -ci_inventario_precio_venta
+
+        ('|")
+        ->
+            \\$1
+
+        \n(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*)
+
+        \nINSERT INTO ci_inventario_precio_venta (id_inventario,id_precio_venta,monto,activo)
+            VALUES($1,'1','$36','1');\n
+
+        %%%
+        ->
+            ,
